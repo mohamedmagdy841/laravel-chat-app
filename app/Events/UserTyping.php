@@ -10,17 +10,17 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ChangeProgressValue implements ShouldBroadcast
+class UserTyping implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $value;
+    public $typerId;
     /**
      * Create a new event instance.
      */
-    public function __construct($value)
+    public function __construct($typerId)
     {
-        $this->value = $value;
+        $this->typerId = $typerId;
     }
 
     /**
@@ -31,7 +31,7 @@ class ChangeProgressValue implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('test'),
+            new PrivateChannel('typing.' . $this->typerId),
         ];
     }
 }
